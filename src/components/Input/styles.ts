@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled, { css } from "styled-components";
 
 export const Container = styled.div`
   display: flex;
@@ -21,14 +21,14 @@ export const Container = styled.div`
     line-height: 36px;
   }
 
-  ${props =>
+  ${(props: any) =>
     props.isFocused &&
     css`
       color: #ff9000;
       border-color: #ff9000;
     `}
 
-  ${props =>
+  ${(props: any) =>
     props.isFilled &&
     css`
       color: #ff9000;
