@@ -7,17 +7,18 @@ import ModalAddFood from "../../components/ModalAddFood";
 import ModalEditFood from "../../components/ModalEditFood";
 import { FoodsContainer } from "./styles";
 
-interface FoodInterfaceProps {
+interface FoodInterface {
   id: number;
   name: string;
   price: string;
   available: boolean;
   image: string;
+  description: string;
 }
 
 export default function Dashboard() {
-  const [foods, setFoods] = useState<FoodInterfaceProps[]>([]);
-  const [editingFood, setEditingFood] = useState<FoodInterfaceProps>();
+  const [foods, setFoods] = useState<FoodInterface[]>([]);
+  const [editingFood, setEditingFood] = useState<FoodInterface>();
   const [modalOpen, setModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
 
@@ -29,7 +30,7 @@ export default function Dashboard() {
     componentDidMount();
   }, []);
 
-  const handleAddFood = async (food: FoodInterfaceProps) => {
+  const handleAddFood = async (food: FoodInterface) => {
     try {
       const response = await api.post("/foods", {
         ...food,
@@ -42,7 +43,7 @@ export default function Dashboard() {
     }
   };
 
-  const handleUpdateFood = async (food: FoodInterfaceProps) => {
+  const handleUpdateFood = async (food: FoodInterface) => {
     try {
       const foodUpdated = await api.put(`/foods/${editingFood?.id}`, {
         ...editingFood,
@@ -62,9 +63,7 @@ export default function Dashboard() {
   const handleDeleteFood = async (id: number) => {
     await api.delete(`/foods/${id}`);
 
-    const foodsFiltered = foods.filter(
-      (food: FoodInterfaceProps) => food.id !== id
-    );
+    const foodsFiltered = foods.filter((food: FoodInterface) => food.id !== id);
 
     setFoods(foodsFiltered);
   };
@@ -77,14 +76,14 @@ export default function Dashboard() {
     setEditModalOpen(!editModalOpen);
   };
 
-  const handleEditFood = (food: FoodInterfaceProps) => {
+  const handleEditFood = (food: FoodInterface) => {
     setEditingFood(food);
     setEditModalOpen(true);
   };
 
   return (
     <>
-      <Header openModal={toggleModal} />
+      <Header toggleModal={toggleModal} />
       <ModalAddFood
         isOpen={modalOpen}
         setIsOpen={toggleModal}
@@ -99,7 +98,7 @@ export default function Dashboard() {
 
       <FoodsContainer data-testid="foods-list">
         {foods &&
-          foods.map((food) => (
+          foods.map((food: FoodInterface) => (
             <Food
               key={food.id}
               food={food}
